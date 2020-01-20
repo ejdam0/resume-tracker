@@ -1,6 +1,5 @@
 package pl.strzelecki.resumetracker.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.NonNull;
@@ -11,7 +10,6 @@ import javax.persistence.*;
 @Table(name = "employers")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Employer {
 
     @Id
@@ -24,10 +22,12 @@ public class Employer {
     private String name;
 
     @Column(name = "street")
-    @NonNull
     private String street;
 
     @Column(name = "city")
-    @NonNull
     private String city;
+
+    public Employer(String name) {
+        this.name = name;
+    }
 }

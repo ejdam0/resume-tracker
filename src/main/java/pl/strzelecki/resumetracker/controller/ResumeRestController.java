@@ -2,9 +2,11 @@ package pl.strzelecki.resumetracker.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.strzelecki.resumetracker.csv.service.SaveToDatabaseService;
 import pl.strzelecki.resumetracker.entity.Resume;
 import pl.strzelecki.resumetracker.service.ResumeService;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -12,10 +14,21 @@ import java.util.List;
 public class ResumeRestController {
 
     private ResumeService resumeService;
+    private SaveToDatabaseService saveToDatabaseService;
 
     @Autowired
-    public ResumeRestController(ResumeService resumeService) {
+    public ResumeRestController(ResumeService resumeService, SaveToDatabaseService saveToDatabaseService) {
         this.resumeService = resumeService;
+        this.saveToDatabaseService = saveToDatabaseService;
+    }
+
+    @PostMapping("/uploadData")
+    public String uploadCsvFile(@RequestBody String data) throws IOException {
+        if (saveToDatabaseService.saveDataToDatabase(data)) {
+            return "Saving resumes...";
+        } else {
+            return "No resumes were saved";
+        }
     }
 
     @GetMapping("/all")

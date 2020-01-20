@@ -16,7 +16,7 @@ public class EmployerServiceImpl implements EmployerService {
     private EmployerRepository employerRepository;
 
     @Autowired
-    public EmployerServiceImpl(@Qualifier("employerRepository") EmployerRepository employerRepository) {
+    public EmployerServiceImpl(EmployerRepository employerRepository) {
         this.employerRepository = employerRepository;
     }
 

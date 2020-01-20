@@ -16,7 +16,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     private AuthorizationRepository authorizationRepository;
 
     @Autowired
-    public AuthorizationServiceImpl(@Qualifier("authorizationRepository") AuthorizationRepository authorizationRepository) {
+    public AuthorizationServiceImpl(AuthorizationRepository authorizationRepository) {
         this.authorizationRepository = authorizationRepository;
     }
 
