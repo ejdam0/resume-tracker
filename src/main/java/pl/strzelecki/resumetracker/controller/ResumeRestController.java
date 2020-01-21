@@ -27,7 +27,7 @@ public class ResumeRestController {
         if (saveToDatabaseService.saveDataToDatabase(data)) {
             return "Saving resumes...";
         } else {
-            return "No resumes were saved";
+            return "No resumes saved.";
         }
     }
 

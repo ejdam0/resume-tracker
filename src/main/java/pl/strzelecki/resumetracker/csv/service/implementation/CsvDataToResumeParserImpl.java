@@ -4,66 +4,59 @@ import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.validator.GenericValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.strzelecki.resumetracker.csv.service.CSVFileHeaders;
+import pl.strzelecki.resumetracker.csv.constants.CSVFileHeaders;
 import pl.strzelecki.resumetracker.csv.service.CsvDataToResumeParser;
-import pl.strzelecki.resumetracker.entity.Employer;
+import pl.strzelecki.resumetracker.csv.service.DuplicateResumeFinder;
+import pl.strzelecki.resumetracker.csv.service.EmployerInDatabaseChecker;
 import pl.strzelecki.resumetracker.entity.Resume;
-import pl.strzelecki.resumetracker.repository.EmployerRepository;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CsvDataToResumeParserImpl implements CsvDataToResumeParser {
     private List<Resume> resumes = new ArrayList<>();
-    private EmployerRepository employerRepository;
+    private EmployerInDatabaseChecker employerInDatabaseChecker;
+    private DuplicateResumeFinder duplicateResumeFinder;
 
     @Autowired
-    public CsvDataToResumeParserImpl(EmployerRepository employerRepository) {
-        this.employerRepository = employerRepository;
+    public CsvDataToResumeParserImpl(EmployerInDatabaseChecker employerInDatabaseChecker, DuplicateResumeFinder duplicateResumeFinder) {
+        this.employerInDatabaseChecker = employerInDatabaseChecker;
+        this.duplicateResumeFinder = duplicateResumeFinder;
     }
 
     @Override
     public List<Resume> parseCSVRecords(List<CSVRecord> csvRecords) {
-        csvRecords.forEach(this::addDataToResumesList);
+        csvRecords.forEach(this::addDataToResumeList);
         return resumes;
     }
 
-    private void addDataToResumesList(CSVRecord r) {
-        resumes.add(new Resume(
+    private void addDataToResumeList(CSVRecord r) {
+        Resume resumeFromRecord = new Resume(
                 r.get(CSVFileHeaders.RESUME_TITLE),
-                checkIfProvidedEmployerAlreadyExistsInDb(r.get(CSVFileHeaders.RESUME_EMPLOYER)),
+                employerInDatabaseChecker.searchForEmployer(r.get(CSVFileHeaders.RESUME_EMPLOYER)),
                 getDate(r.get(CSVFileHeaders.RESUME_DATE)),
                 Boolean.parseBoolean(r.get(CSVFileHeaders.RESUME_RESPONDED)),
-                r.get(CSVFileHeaders.RESUME_URL)));
+                r.get(CSVFileHeaders.RESUME_URL));
+        if (duplicateResumeFinder.findDuplicate(resumeFromRecord)) {
+            System.out.println(resumeFromRecord + " already exists in the database!");
+        } else {
+            resumes.add(resumeFromRecord);
+        }
     }
 
     private LocalDate getDate(String dateString) {
         String datePattern = "yyyy-MM-dd";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(datePattern);
         GenericValidator.isDate(dateString, datePattern, true);
 
         if (dateString.isEmpty()) {
-            LocalDate defaultDate = LocalDate.now();
-            return LocalDate.parse(defaultDate.format(DateTimeFormatter.ISO_DATE));
-        } else if (GenericValidator.isDate(dateString, datePattern, true)) {
+            return LocalDate.parse(LocalDate.of(2020, 1, 1).format(DateTimeFormatter.ISO_DATE));
+        } else if (!GenericValidator.isDate(dateString, datePattern, true)) {
             throw new RuntimeException("Provided data is not a proper date");
         } else {
-            return LocalDate.parse(dateString, formatter);
-        }
-    }
-
-    private Employer checkIfProvidedEmployerAlreadyExistsInDb(String dataEmployerName) {
-        Optional<Employer> employerByName = employerRepository.findEmployerByName(dataEmployerName);
-        if (employerByName.isPresent()) {
-            return employerByName.get();
-        } else {
-            Employer newEmployerInDb = new Employer(dataEmployerName);
-            employerRepository.save(newEmployerInDb);
-            return newEmployerInDb;
+            return LocalDate.parse(dateString, DateTimeFormatter.ISO_DATE);
         }
     }
 }

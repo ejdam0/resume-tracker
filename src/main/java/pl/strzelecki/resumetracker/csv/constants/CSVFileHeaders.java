@@ -1,4 +1,4 @@
-package pl.strzelecki.resumetracker.csv.service;
+package pl.strzelecki.resumetracker.csv.constants;
 
 public enum CSVFileHeaders {
     RESUME_TITLE {
