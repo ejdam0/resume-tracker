@@ -1,6 +1,8 @@
 package pl.strzelecki.resumetracker.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.strzelecki.resumetracker.csv.service.SaveToDatabaseService;
 import pl.strzelecki.resumetracker.entity.Resume;
@@ -23,11 +25,15 @@ public class ResumeRestController {
     }
 
     @PostMapping("/uploadData")
-    public String uploadCsvFile(@RequestBody String data) throws IOException {
-        if (saveToDatabaseService.saveDataToDatabase(data)) {
-            return "Saving resumes...";
-        } else {
-            return "No resumes saved.";
+    public ResponseEntity<?> uploadCsvFile(@RequestBody String data) {
+        try {
+            if (saveToDatabaseService.saveDataToDatabase(data)) {
+                return new ResponseEntity<>("Successfully added data!", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("No data added!", HttpStatus.UNPROCESSABLE_ENTITY);
+            }
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 

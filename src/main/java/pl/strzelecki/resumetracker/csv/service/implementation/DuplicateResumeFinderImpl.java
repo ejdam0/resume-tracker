@@ -6,7 +6,9 @@ import pl.strzelecki.resumetracker.csv.service.DuplicateResumeFinder;
 import pl.strzelecki.resumetracker.entity.Resume;
 import pl.strzelecki.resumetracker.repository.ResumeRepository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DuplicateResumeFinderImpl implements DuplicateResumeFinder {
@@ -19,12 +21,17 @@ public class DuplicateResumeFinderImpl implements DuplicateResumeFinder {
     }
 
     @Override
-    public boolean findDuplicate(Resume resume) {
-        Optional<Resume> resumeFromDatabase = resumeRepository.findResumeByTitleAndEmployerIdAndPostDateAndResponded(
-                resume.getTitle(),
-                resume.getEmployerId(),
-                resume.getPostDate(),
-                resume.getResponded());
-        return resumeFromDatabase.isPresent();
+    public List<Resume> removeDuplicatesFromList(List<Resume> uploadedResumes) {
+        return uploadedResumes.stream()
+                .filter(up -> {
+                            Optional<Resume> resumeFromDb = resumeRepository.findResumeByTitleAndEmployerIdAndPostDateAndResponded(
+                                    up.getTitle(),
+                                    up.getEmployerId(),
+                                    up.getPostDate(),
+                                    up.getResponded());
+                            return resumeFromDb.isEmpty();
+                        }
+                )
+                .collect(Collectors.toList());
     }
 }

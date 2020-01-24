@@ -1,4 +1,4 @@
-package pl.strzelecki.resumetracker.csv.constants;
+package pl.strzelecki.resumetracker.constants;
 
 import org.apache.commons.csv.CSVFormat;
 

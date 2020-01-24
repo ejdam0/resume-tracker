@@ -5,9 +5,9 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.strzelecki.resumetracker.constants.CSVFileFormat;
 import pl.strzelecki.resumetracker.csv.service.CsvDataToResumeParser;
 import pl.strzelecki.resumetracker.csv.service.CsvReaderService;
-import pl.strzelecki.resumetracker.csv.constants.CSVFileFormat;
 import pl.strzelecki.resumetracker.entity.Resume;
 
 import java.io.IOException;
@@ -30,7 +30,6 @@ public class CsvReaderServiceImpl implements CsvReaderService {
         @Cleanup CSVParser csvFileParser = new CSVParser(reader, CSVFileFormat.getFormat());
         List<CSVRecord> csvRecords;
         csvRecords = csvFileParser.getRecords();
-
         return csvDataToResumeParser.parseCSVRecords(csvRecords);
     }
 }

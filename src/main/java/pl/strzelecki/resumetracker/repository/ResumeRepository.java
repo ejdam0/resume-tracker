@@ -10,4 +10,3 @@ import java.util.Optional;
 public interface ResumeRepository extends JpaRepository<Resume, Long> {
     Optional<Resume> findResumeByTitleAndEmployerIdAndPostDateAndResponded(String title, Employer employer, LocalDate postDate, Boolean responded);
 }
-

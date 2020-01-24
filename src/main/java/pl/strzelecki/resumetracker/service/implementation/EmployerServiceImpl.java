@@ -1,7 +1,6 @@
 package pl.strzelecki.resumetracker.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import pl.strzelecki.resumetracker.entity.Employer;
 import pl.strzelecki.resumetracker.repository.EmployerRepository;

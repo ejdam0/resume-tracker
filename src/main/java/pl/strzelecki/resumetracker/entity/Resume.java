@@ -1,8 +1,12 @@
 package pl.strzelecki.resumetracker.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.NonNull;
+import pl.strzelecki.resumetracker.constants.LocalDateDeserializer;
+import pl.strzelecki.resumetracker.constants.LocalDateSerializer;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -29,6 +33,8 @@ public class Resume {
 
     @Column(name = "post_date")
     @NonNull
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate postDate;
 
     @Column(name = "responded")

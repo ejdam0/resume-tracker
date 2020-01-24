@@ -27,8 +27,9 @@ public class SaveToDatabaseServiceImpl implements SaveToDatabaseService {
         List<Resume> uploadedResumes = csvReaderService.readCsvData(data);
         if (uploadedResumes.isEmpty()) {
             return false;
+        } else {
+            resumeRepository.saveAll(uploadedResumes);
+            return true;
         }
-        resumeRepository.saveAll(uploadedResumes);
-        return true;
     }
 }
