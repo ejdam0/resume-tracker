@@ -1,4 +1,4 @@
-package pl.strzelecki.resumetracker.csv.service.implementation;
+package pl.strzelecki.resumetracker.uploadData.csv.implementation;
 
 import lombok.Cleanup;
 import org.apache.commons.csv.CSVParser;
@@ -6,8 +6,8 @@ import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.strzelecki.resumetracker.constants.CSVFileFormat;
-import pl.strzelecki.resumetracker.csv.service.CsvDataToResumeParser;
-import pl.strzelecki.resumetracker.csv.service.CsvReaderService;
+import pl.strzelecki.resumetracker.uploadData.csv.CsvDataToResumeParser;
+import pl.strzelecki.resumetracker.uploadData.csv.CsvReaderService;
 import pl.strzelecki.resumetracker.entity.Resume;
 
 import java.io.IOException;

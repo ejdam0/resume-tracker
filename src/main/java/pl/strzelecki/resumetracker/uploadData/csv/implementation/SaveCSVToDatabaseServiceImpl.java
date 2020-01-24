@@ -1,23 +1,23 @@
-package pl.strzelecki.resumetracker.csv.service.implementation;
+package pl.strzelecki.resumetracker.uploadData.csv.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.strzelecki.resumetracker.csv.service.CsvReaderService;
-import pl.strzelecki.resumetracker.csv.service.SaveToDatabaseService;
 import pl.strzelecki.resumetracker.entity.Resume;
 import pl.strzelecki.resumetracker.repository.ResumeRepository;
+import pl.strzelecki.resumetracker.uploadData.csv.CsvReaderService;
+import pl.strzelecki.resumetracker.uploadData.csv.SaveCSVToDatabaseService;
 
 import java.io.IOException;
 import java.util.List;
 
 @Service
-public class SaveToDatabaseServiceImpl implements SaveToDatabaseService {
+public class SaveCSVToDatabaseServiceImpl implements SaveCSVToDatabaseService {
 
     private ResumeRepository resumeRepository;
     private CsvReaderService csvReaderService;
 
     @Autowired
-    public SaveToDatabaseServiceImpl(ResumeRepository resumeRepository, CsvReaderService csvReaderService) {
+    public SaveCSVToDatabaseServiceImpl(ResumeRepository resumeRepository, CsvReaderService csvReaderService) {
         this.resumeRepository = resumeRepository;
         this.csvReaderService = csvReaderService;
     }

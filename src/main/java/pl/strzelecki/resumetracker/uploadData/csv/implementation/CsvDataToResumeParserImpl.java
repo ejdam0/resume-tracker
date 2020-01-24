@@ -1,13 +1,13 @@
-package pl.strzelecki.resumetracker.csv.service.implementation;
+package pl.strzelecki.resumetracker.uploadData.csv.implementation;
 
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.validator.GenericValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.strzelecki.resumetracker.constants.CSVFileHeaders;
-import pl.strzelecki.resumetracker.csv.service.CsvDataToResumeParser;
-import pl.strzelecki.resumetracker.csv.service.DuplicateResumeFinder;
-import pl.strzelecki.resumetracker.csv.service.EmployerInDatabaseChecker;
+import pl.strzelecki.resumetracker.uploadData.csv.CsvDataToResumeParser;
+import pl.strzelecki.resumetracker.uploadData.duplicateFinderService.DuplicateResumeFinder;
+import pl.strzelecki.resumetracker.uploadData.duplicateFinderService.EmployerInDatabaseChecker;
 import pl.strzelecki.resumetracker.entity.Resume;
 
 import java.time.LocalDate;

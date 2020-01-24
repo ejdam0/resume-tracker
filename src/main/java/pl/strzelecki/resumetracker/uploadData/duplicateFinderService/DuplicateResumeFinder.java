@@ -1,4 +1,4 @@
-package pl.strzelecki.resumetracker.csv.service;
+package pl.strzelecki.resumetracker.uploadData.duplicateFinderService;
 
 import pl.strzelecki.resumetracker.entity.Resume;
 

@@ -1,8 +1,8 @@
-package pl.strzelecki.resumetracker.csv.service.implementation;
+package pl.strzelecki.resumetracker.uploadData.duplicateFinderService.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.strzelecki.resumetracker.csv.service.DuplicateResumeFinder;
+import pl.strzelecki.resumetracker.uploadData.duplicateFinderService.DuplicateResumeFinder;
 import pl.strzelecki.resumetracker.entity.Resume;
 import pl.strzelecki.resumetracker.repository.ResumeRepository;
 
