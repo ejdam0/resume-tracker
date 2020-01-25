@@ -53,12 +53,16 @@ public class ResumeRestController {
             return new ResponseEntity<>("Select a file!", HttpStatus.NO_CONTENT);
         }
         try {
-            saveXLSToDatabaseService.saveDataToDatabase(uploadedFile);
+            if (saveXLSToDatabaseService.saveDataToDatabase(uploadedFile)) {
+                return new ResponseEntity<>("Successfully uploaded - " +
+                        uploadedFile.getOriginalFilename(), new HttpHeaders(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("No data added!", HttpStatus.UNPROCESSABLE_ENTITY);
+            }
+
         } catch (IOException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Successfully uploaded - " +
-                uploadedFile.getOriginalFilename(), new HttpHeaders(), HttpStatus.OK);
     }
 
     @GetMapping("/all")
