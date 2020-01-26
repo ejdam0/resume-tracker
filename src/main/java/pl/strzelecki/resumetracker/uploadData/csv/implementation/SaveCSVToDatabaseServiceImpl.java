@@ -23,13 +23,8 @@ public class SaveCSVToDatabaseServiceImpl implements SaveCSVToDatabaseService {
     }
 
     @Override
-    public boolean saveDataToDatabase(String data) {
-        List<Resume> uploadedResumes;
-        try {
-            uploadedResumes = csvReaderService.readCsvData(data);
-        } catch (IOException e) {
-            throw new RuntimeException("Cannot read provided csv data.");
-        }
+    public boolean saveDataToDatabase(String data) throws IOException {
+        List<Resume> uploadedResumes = csvReaderService.readCsvData(data);
         if (uploadedResumes.isEmpty()) {
             return false;
         } else {

@@ -34,16 +34,14 @@ public class SaveXLSToDatabaseServiceImpl implements SaveXLSToDatabaseService {
     }
 
     @Override
-    public boolean saveDataToDatabase(MultipartFile uploadedFile) {
+    public boolean saveDataToDatabase(MultipartFile uploadedFile) throws IOException {
         File xlsDataFile;
         List<Resume> uploadedResumes;
-        try {
-            xlsDataFile = multiPartFileToFileConverter.convertToFile(uploadedFile);
-            String convertedXlsFile = xlsToCsvConverterService.convertXslToCsv(xlsDataFile);
-            uploadedResumes = csvReaderService.readCsvData(convertedXlsFile);
-        } catch (IOException e) {
-            throw new RuntimeException("Cannot convert the file!");
-        }
+
+        xlsDataFile = multiPartFileToFileConverter.convertToFile(uploadedFile);
+        String convertedXlsFile = xlsToCsvConverterService.convertXslToCsv(xlsDataFile);
+        uploadedResumes = csvReaderService.readCsvData(convertedXlsFile);
+
         if (uploadedResumes.isEmpty()) {
             return false;
         } else {

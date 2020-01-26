@@ -22,7 +22,7 @@ public class DuplicateResumeFinderImpl implements DuplicateResumeFinder {
     @Override
     public List<Resume> removeDuplicatesFromList(List<Resume> uploadedResumes) {
         return uploadedResumes.stream()
-                .filter(up -> resumeRepository.existsResumeByTitleAndEmployerIdAndPostDateAndResponded(
+                .filter(up -> !resumeRepository.existsResumeByTitleAndEmployerIdAndPostDateAndResponded(
                         up.getTitle(),
                         up.getEmployerId(),
                         up.getPostDate(),
