@@ -4,18 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.strzelecki.resumetracker.entity.Resume;
 import pl.strzelecki.resumetracker.repository.ResumeRepository;
-import pl.strzelecki.resumetracker.uploadData.duplicateFinderService.DuplicateResumeFinder;
+import pl.strzelecki.resumetracker.uploadData.duplicateFinderService.ListDuplicateResumeFinder;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class DuplicateResumeFinderImpl implements DuplicateResumeFinder {
+public class ListDuplicateResumeFinderImpl implements ListDuplicateResumeFinder {
 
     private ResumeRepository resumeRepository;
 
     @Autowired
-    public DuplicateResumeFinderImpl(ResumeRepository resumeRepository) {
+    public ListDuplicateResumeFinderImpl(ResumeRepository resumeRepository) {
         this.resumeRepository = resumeRepository;
     }
 

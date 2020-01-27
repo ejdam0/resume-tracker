@@ -66,38 +66,38 @@ public class ResumeRestController {
     }
 
     @GetMapping("/all")
-    public List<Resume> findAll() {
-        return resumeService.findAll();
+    public ResponseEntity<List<Resume>> findAll() {
+        return new ResponseEntity<>(resumeService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{resumeId}")
-    public Resume findById(@PathVariable("resumeId") long theId) {
-        return resumeService.findById(theId);
+    public ResponseEntity<Resume> findById(@PathVariable("resumeId") long theId) {
+        return new ResponseEntity<>(resumeService.findById(theId), HttpStatus.OK);
     }
 
     @PostMapping("/all")
-    public Resume save(@RequestBody Resume resume) {
+    public ResponseEntity<?> save(@RequestBody Resume resume) {
         // set id to 0, to force save
         resume.setId(0L);
         resumeService.save(resume);
-        return resume;
+        return new ResponseEntity<>("Saved new resume:\n " + resume, HttpStatus.OK);
     }
 
     @PutMapping("/all")
-    public Resume update(@RequestBody Resume resume) {
+    public ResponseEntity<Resume> update(@RequestBody Resume resume) {
         resumeService.save(resume);
-        return resume;
+        return new ResponseEntity<>(resume, HttpStatus.OK);
     }
 
     @DeleteMapping("/{resumeId}")
-    public String deleteById(@PathVariable("resumeId") long theId) {
+    public ResponseEntity<?> deleteById(@PathVariable("resumeId") long theId) {
         resumeService.deleteById(theId);
-        return "Deleted one";
+        return new ResponseEntity<>("Deleted resume with id: " + theId, HttpStatus.OK);
     }
 
     @DeleteMapping("/all")
-    public String deleteAll() {
+    public ResponseEntity<?> deleteAll() {
         resumeService.deleteAll();
-        return "Deleted all";
+        return new ResponseEntity<>("Deleted all resumes in the database.", HttpStatus.OK);
     }
 }

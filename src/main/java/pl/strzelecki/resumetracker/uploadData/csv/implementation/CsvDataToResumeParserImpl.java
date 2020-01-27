@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 import pl.strzelecki.resumetracker.constants.CSVFileHeaders;
 import pl.strzelecki.resumetracker.entity.Resume;
 import pl.strzelecki.resumetracker.uploadData.csv.CsvDataToResumeParser;
-import pl.strzelecki.resumetracker.uploadData.csv.DataFromCSVGetter;
-import pl.strzelecki.resumetracker.uploadData.duplicateFinderService.DuplicateResumeFinder;
+import pl.strzelecki.resumetracker.uploadData.csv.DateFromCSVGetter;
 import pl.strzelecki.resumetracker.uploadData.duplicateFinderService.EmployerInDatabaseChecker;
+import pl.strzelecki.resumetracker.uploadData.duplicateFinderService.ListDuplicateResumeFinder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,16 +16,16 @@ import java.util.List;
 @Service
 public class CsvDataToResumeParserImpl implements CsvDataToResumeParser {
     private EmployerInDatabaseChecker employerInDatabaseChecker;
-    private DuplicateResumeFinder duplicateResumeFinder;
-    private DataFromCSVGetter dataFromCSVGetter;
+    private ListDuplicateResumeFinder duplicateResumeFinder;
+    private DateFromCSVGetter dateFromCSVGetter;
 
     @Autowired
     public CsvDataToResumeParserImpl(EmployerInDatabaseChecker employerInDatabaseChecker,
-                                     DuplicateResumeFinder duplicateResumeFinder,
-                                     DataFromCSVGetter dataFromCSVGetter) {
+                                     ListDuplicateResumeFinder duplicateResumeFinder,
+                                     DateFromCSVGetter dateFromCSVGetter) {
         this.employerInDatabaseChecker = employerInDatabaseChecker;
         this.duplicateResumeFinder = duplicateResumeFinder;
-        this.dataFromCSVGetter = dataFromCSVGetter;
+        this.dateFromCSVGetter = dateFromCSVGetter;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class CsvDataToResumeParserImpl implements CsvDataToResumeParser {
                     Resume resumeFromRecord = new Resume(
                             r.get(CSVFileHeaders.RESUME_TITLE),
                             employerInDatabaseChecker.searchForEmployer(r.get(CSVFileHeaders.RESUME_EMPLOYER)),
-                            dataFromCSVGetter.getDate(r.get(CSVFileHeaders.RESUME_DATE)),
+                            dateFromCSVGetter.getDate(r.get(CSVFileHeaders.RESUME_DATE)),
                             Boolean.parseBoolean(r.get(CSVFileHeaders.RESUME_RESPONDED)),
                             r.get(CSVFileHeaders.RESUME_URL));
                     uploadedResumes.add(resumeFromRecord);

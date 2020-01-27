@@ -4,6 +4,6 @@ import pl.strzelecki.resumetracker.entity.Resume;
 
 import java.util.List;
 
-public interface DuplicateResumeFinder {
+public interface ListDuplicateResumeFinder {
     List<Resume> removeDuplicatesFromList(List<Resume> uploadedResumes);
 }

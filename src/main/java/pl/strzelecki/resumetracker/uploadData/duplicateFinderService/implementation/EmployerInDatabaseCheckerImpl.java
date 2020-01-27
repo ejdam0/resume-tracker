@@ -2,9 +2,9 @@ package pl.strzelecki.resumetracker.uploadData.duplicateFinderService.implementa
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.strzelecki.resumetracker.uploadData.duplicateFinderService.EmployerInDatabaseChecker;
 import pl.strzelecki.resumetracker.entity.Employer;
 import pl.strzelecki.resumetracker.repository.EmployerRepository;
+import pl.strzelecki.resumetracker.uploadData.duplicateFinderService.EmployerInDatabaseChecker;
 
 import java.util.Optional;
 

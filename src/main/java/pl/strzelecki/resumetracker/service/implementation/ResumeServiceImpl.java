@@ -2,9 +2,12 @@ package pl.strzelecki.resumetracker.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.strzelecki.resumetracker.entity.Employer;
 import pl.strzelecki.resumetracker.entity.Resume;
 import pl.strzelecki.resumetracker.repository.ResumeRepository;
 import pl.strzelecki.resumetracker.service.ResumeService;
+import pl.strzelecki.resumetracker.uploadData.duplicateFinderService.EmployerInDatabaseChecker;
+import pl.strzelecki.resumetracker.uploadData.duplicateFinderService.SingleDuplicateResumeFinder;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,10 +16,16 @@ import java.util.Optional;
 public class ResumeServiceImpl implements ResumeService {
 
     private ResumeRepository resumeRepository;
+    private EmployerInDatabaseChecker employerInDatabaseChecker;
+    private SingleDuplicateResumeFinder singleDuplicateResumeFinder;
 
     @Autowired
-    public ResumeServiceImpl(ResumeRepository resumeRepository) {
+    public ResumeServiceImpl(ResumeRepository resumeRepository,
+                             EmployerInDatabaseChecker employerInDatabaseChecker,
+                             SingleDuplicateResumeFinder singleDuplicateResumeFinder) {
         this.resumeRepository = resumeRepository;
+        this.employerInDatabaseChecker = employerInDatabaseChecker;
+        this.singleDuplicateResumeFinder = singleDuplicateResumeFinder;
     }
 
     @Override
@@ -35,7 +44,15 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public void save(Resume resume) {
-        resumeRepository.save(resume);
+        // check if employer exists in db
+        Employer employer = employerInDatabaseChecker.searchForEmployer(resume.getEmployerId().getName());
+        resume.setEmployerId(employer);
+        // check if resume exists in db
+        if (singleDuplicateResumeFinder.checkIfResumeExistsInDb(resume)) {
+            throw new RuntimeException("This resume already exists in the database!");
+        } else {
+            resumeRepository.save(resume);
+        }
     }
 
     @Override

@@ -2,14 +2,14 @@ package pl.strzelecki.resumetracker.uploadData.csv.implementation;
 
 import org.apache.commons.validator.GenericValidator;
 import org.springframework.stereotype.Service;
-import pl.strzelecki.resumetracker.uploadData.csv.DataFromCSVGetter;
+import pl.strzelecki.resumetracker.uploadData.csv.DateFromCSVGetter;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 
 @Service
-public class DataFromCSVGetterImpl implements DataFromCSVGetter {
+public class DateFromCSVGetterImpl implements DateFromCSVGetter {
     private final DateTimeFormatter ISO_FORMATTER = DateTimeFormatter.ISO_DATE;
 
     @Override
