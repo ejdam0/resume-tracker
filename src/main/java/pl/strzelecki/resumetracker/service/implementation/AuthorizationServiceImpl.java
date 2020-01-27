@@ -1,7 +1,9 @@
 package pl.strzelecki.resumetracker.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import pl.strzelecki.resumetracker.entity.Authorization;
 import pl.strzelecki.resumetracker.repository.AuthorizationRepository;
 import pl.strzelecki.resumetracker.service.AuthorizationService;
@@ -28,7 +30,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     public Authorization findById(long theId) {
         Optional<Authorization> result = authorizationRepository.findById(theId);
         if (result.isEmpty()) {
-            throw new RuntimeException("Not found.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Authorization with id: " + theId + " not found.");
         }
         return result.get();
     }
@@ -42,7 +44,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     public void deleteById(long theId) {
         Optional<Authorization> result = authorizationRepository.findById(theId);
         if (result.isEmpty()) {
-            throw new RuntimeException("Not found.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Authorization with id: " + theId + " not found.");
         }
         authorizationRepository.deleteById(theId);
     }

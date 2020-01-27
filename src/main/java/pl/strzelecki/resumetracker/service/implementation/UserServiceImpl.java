@@ -1,7 +1,9 @@
 package pl.strzelecki.resumetracker.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import pl.strzelecki.resumetracker.entity.User;
 import pl.strzelecki.resumetracker.repository.UserRepository;
 import pl.strzelecki.resumetracker.service.UserService;
@@ -28,13 +30,16 @@ public class UserServiceImpl implements UserService {
     public User findById(long theId) {
         Optional<User> result = userRepository.findById(theId);
         if (result.isEmpty()) {
-            throw new RuntimeException("Not found.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id: " + theId + " not found.");
         }
         return result.get();
     }
 
     @Override
     public void save(User user) {
+        if (userRepository.existsById(user.getId())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "This user already exists in the database!");
+        }
         userRepository.save(user);
     }
 
@@ -42,7 +47,7 @@ public class UserServiceImpl implements UserService {
     public void deleteById(long theId) {
         Optional<User> result = userRepository.findById(theId);
         if (result.isEmpty()) {
-            throw new RuntimeException("Not found.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id: " + theId + " not found.");
         }
         userRepository.deleteById(theId);
     }

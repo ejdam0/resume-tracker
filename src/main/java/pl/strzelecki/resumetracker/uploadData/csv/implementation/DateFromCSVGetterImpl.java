@@ -1,7 +1,9 @@
 package pl.strzelecki.resumetracker.uploadData.csv.implementation;
 
 import org.apache.commons.validator.GenericValidator;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import pl.strzelecki.resumetracker.uploadData.csv.DateFromCSVGetter;
 
 import java.time.LocalDate;
@@ -28,7 +30,7 @@ public class DateFromCSVGetterImpl implements DateFromCSVGetter {
             String tempStringResult = tempResult.format(ISO_FORMATTER);
             return LocalDate.parse(tempStringResult, ISO_FORMATTER);
         } else if (!GenericValidator.isDate(dateString, datePattern, true)) {
-            throw new RuntimeException("Provided data is not a proper date: " + dateString + ". Date format: yyyy-MM-dd");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Provided data is not a proper date: " + dateString + ". Date format: yyyy-MM-dd");
         } else {
             return LocalDate.parse(dateString, ISO_FORMATTER);
         }

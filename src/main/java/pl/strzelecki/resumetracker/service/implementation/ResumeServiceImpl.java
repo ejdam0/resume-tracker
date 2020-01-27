@@ -1,7 +1,9 @@
 package pl.strzelecki.resumetracker.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import pl.strzelecki.resumetracker.entity.Employer;
 import pl.strzelecki.resumetracker.entity.Resume;
 import pl.strzelecki.resumetracker.repository.ResumeRepository;
@@ -37,7 +39,7 @@ public class ResumeServiceImpl implements ResumeService {
     public Resume findById(long theId) {
         Optional<Resume> result = resumeRepository.findById(theId);
         if (result.isEmpty()) {
-            throw new RuntimeException("Not found.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Resume with id: " + theId + " not found.");
         }
         return result.get();
     }
@@ -49,7 +51,7 @@ public class ResumeServiceImpl implements ResumeService {
         resume.setEmployerId(employer);
         // check if resume exists in db
         if (singleDuplicateResumeFinder.checkIfResumeExistsInDb(resume)) {
-            throw new RuntimeException("This resume already exists in the database!");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "This resume already exists in the database!");
         } else {
             resumeRepository.save(resume);
         }
@@ -59,7 +61,7 @@ public class ResumeServiceImpl implements ResumeService {
     public void deleteById(long theId) {
         Optional<Resume> result = resumeRepository.findById(theId);
         if (result.isEmpty()) {
-            throw new RuntimeException("Not found.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Resume with id: " + theId + " not found.");
         }
         resumeRepository.deleteById(theId);
     }
